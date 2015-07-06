@@ -1,28 +1,33 @@
 import scala.io.Source
+import scala.math.BigInt
 
 object Main extends App{
 	import Util._
-	val N = 32000
-	def primes(n:Int) = (3 to n).foldLeft(Vector(2))((s,i)=>if(s.find(i%_==0)==None) s++Vector(i) else s)
-	val ps =  time{ primes(N).toSet}
-	println(ps)
-	def isPrime(i:Int) = 	if(i==1) false
-				else if(i<=N) ps.contains(i)
-				else ps.find(i%_==0)==None
-
-	read2.map{case(i,j)=> (i to j).filter(isPrime).toList}
-		.foreach{x=>x.foreach(println);println}
+	read9.map{l=>(BigInt(l(0)),BigInt(l(1)))}
+		.map{ case(x,y) =>List((x+y)/2,(x-y)/2) }.flatten.printn
 
 }
 
 object Util{
 
+	def read9 = read.grouped(2)
+	def read8 = readTail.grouped(3).map{l=>(l(1).split(" ").toInt,l(2).split(" ").toInt)}
+
+	def read7 = {
+		def grp(iter:Iterator[Int]):Stream[Iterator[Int]] = 
+			if(!iter.hasNext) Stream.Empty
+			else iter.take(iter.next) #:: grp(iter)
+		grp(read6)
+	}
+
+	def read6 = read.toInt.takeWhile(_ != -1)
+
+	def read5 = read.map(_.split(" ").toInt.toArray).takeWhile{l=>(!(l(0)==0&&l(1)==0&&l(2)==0))}
         def read = Source.fromInputStream(System.in).getLines().takeWhile(_!=null)
         def readTail =  read.tail
         def readTailTuple2 = readTail.map(_.split(" ").toList.tuple2)
         def readTailIntTuple2 = readTail.map(_.split(" ").map(_.toInt).toList.tuple2)
 	def read2 = readTailIntTuple2
-
 	def time[R](block: => R): R = {
 		    val t0 = System.nanoTime()
 		    val result = block    // call-by-name
@@ -38,12 +43,26 @@ object Util{
                 def tuple = (iter.next,iter)
                 def tail = tuple._2
         }
+        implicit class MyIteratorStr(iter:Iterator[String]){
+		def toInt = iter.map{_.toInt}
+	}
         implicit class MySeq[T](seq:Seq[T]){
                 def tuple2 = (seq(0),seq(1))
         }
         implicit class MyBooleanTraversable(t:Traversable[Boolean]){
                 def or = t.reduce(_||_)
         }
+	implicit class MyTravsOnce[T](seq:TraversableOnce[T]){
+		def printn = seq.foreach(println)
+		def mprintn = seq.map{x=>println(x);x}
+        }
+        implicit class MySeqString(seq:Traversable[String]){
+		def toInt = seq.map{_.toInt}
+        }
+        implicit class MyArrayStr(seq:Array[String]){
+		def toInt = seq.map{_.toInt}
+        }
+
 }
 
 Main.main(Array())

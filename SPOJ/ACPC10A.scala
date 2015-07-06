@@ -2,27 +2,20 @@ import scala.io.Source
 
 object Main extends App{
 	import Util._
-	val N = 32000
-	def primes(n:Int) = (3 to n).foldLeft(Vector(2))((s,i)=>if(s.find(i%_==0)==None) s++Vector(i) else s)
-	val ps =  time{ primes(N).toSet}
-	println(ps)
-	def isPrime(i:Int) = 	if(i==1) false
-				else if(i<=N) ps.contains(i)
-				else ps.find(i%_==0)==None
-
-	read2.map{case(i,j)=> (i to j).filter(isPrime).toList}
-		.foreach{x=>x.foreach(println);println}
-
+	read5.map{ l =>
+		if(2*l(1)==l(0)+l(2)) "AP "+(2*l(2)-l(1))
+		else "GP "+(l(2)*l(2)/l(1))
+	}.printn
 }
 
 object Util{
 
+	def read5 = read.map(_.split(" ").toInt.toArray).takeWhile{l=>(!(l(0)==0&&l(1)==0&&l(2)==0))}
         def read = Source.fromInputStream(System.in).getLines().takeWhile(_!=null)
         def readTail =  read.tail
         def readTailTuple2 = readTail.map(_.split(" ").toList.tuple2)
         def readTailIntTuple2 = readTail.map(_.split(" ").map(_.toInt).toList.tuple2)
 	def read2 = readTailIntTuple2
-
 	def time[R](block: => R): R = {
 		    val t0 = System.nanoTime()
 		    val result = block    // call-by-name
@@ -44,6 +37,18 @@ object Util{
         implicit class MyBooleanTraversable(t:Traversable[Boolean]){
                 def or = t.reduce(_||_)
         }
+	implicit class MyTravsOnce[T](seq:TraversableOnce[T]){
+		def printn = seq.foreach(println)
+		def mprintn = seq.map{x=>println(x);x}
+        }
+
+        implicit class MySeqString(seq:Traversable[String]){
+		def toInt = seq.map{_.toInt}
+        }
+        implicit class MyArrayStr(seq:Array[String]){
+		def toInt = seq.map{_.toInt}
+        }
+
 }
 
 Main.main(Array())
