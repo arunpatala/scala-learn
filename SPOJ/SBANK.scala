@@ -12,7 +12,7 @@ object Main extends App{
 			if(s==t) (t,i+1)
 			else (t,1)
 		}.mkString("\n") + "\n"
-	}
+	}.printn
 }
 
 object Util{
@@ -21,7 +21,7 @@ object Util{
 	def read21 = readIter(readTail)
 
 	def readIter(read:Iterator[String]):Stream[List[String]] = if(read.isEmpty) Stream.Empty
-						else read.next.sInt.toList.tuple2 match{ case(n,m) =>
+						else readTail.next.toInt match{ case n =>
 								read.take(n).toList #:: readIter(read)
 						}
 

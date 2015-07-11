@@ -3,15 +3,18 @@ import scala.io.Source
 object Main extends App{
 	import Util._
 	val N = 32000
-	def primes(n:Int) = (3 to n).foldLeft(Vector(2))((s,i)=>if(s.find(i%_==0)==None) s++Vector(i) else s)
-	val ps =  time{ primes(N).toSet}
-	println(ps)
-	def isPrime(i:Int) = 	if(i==1) false
-				else if(i<=N) ps.contains(i)
-				else ps.find(i%_==0)==None
+	def primes(n:Int) = (3 to n).foldLeft(Vector(2))((s,i)=>if(s.find(i%_==0)==None) s:+i else s)
+	val ps =   time{ primes(N).toList }
+	def isPrime(i:Int) = 	//if(i==1) false
+				//ps.takeWhile(_<=math.sqrt(i).toInt).find(i%_==0)==None
+					ps.find(i%_==0)==None
+	
 
-	read2.map{case(i,j)=> (i to j).filter(isPrime).toList}
-		.foreach{x=>x.foreach(println);println}
+	read2.map{case(i,j)=>
+		time{
+			 (i to j).filter(isPrime).toList
+		}
+		}.foreach(l=>println(l.size))
 
 }
 

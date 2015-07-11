@@ -1,19 +1,19 @@
 import scala.io.Source
 import scala.annotation.tailrec
+import scala.collection.mutable.Stack
 
 
 object Main extends App{
 	import Util._
-	@tailrec def park(l:Seq[Int],i:Int,j:Int):String = {
-			if(l.isEmpty) "yes"
-			else if(l.head+1==j) park(l.tail,i,l.head)
-			else if(l.head==i+1) park(l.tail,l.head,j)
-			else "no"
+	@tailrec def park(l:List[Int],next:Int,st:List[Int]):Boolean = {
+		if(l.isEmpty && st.isEmpty) true
+		else if(!l.isEmpty && l.head==next) park(l.tail,next+1,st)
+		else if(!st.isEmpty && st.head==next) park(l,next+1,st.tail)
+		else if(l.isEmpty && !st.isEmpty) false 
+		else park(l.tail,next,l.head::st)
 	}
-
-
 	read15.map{ l =>
-			park(l,0,l.size+1)
+			if(park(l.toList,1,List[Int]())) "yes" else "no"
 		}.printn
 }
 

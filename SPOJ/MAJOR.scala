@@ -1,15 +1,15 @@
 import scala.io.Source
 import scala.annotation.tailrec
-import scala.math.max
-
+import scala.math.min
 
 
 object Main extends App{
 	import Util._
-	readTail.grouped(4).map(_(3).sInt.toList)map{ l=>
-		val v = l.groupBy(x=>x).mapValues(_.size).filter(_>=l.size/2)	
-		if(v.size==1) "YES "+v.keys(0)
-		else "NO"
+	readTail.grouped(2).map(_(1).split(" ").toList).map{ l =>
+		val n = l.size;
+		val res = l.groupBy(x=>x).mapValues(_.size).toSeq.filter(_._2>n/2);
+		if(res.size==0) "NO"
+		else "YES "+res(0)._1
 	}.printn
 
 
@@ -17,6 +17,9 @@ object Main extends App{
 
 object Util{
 
+	def read23 = read.takeWhile(_!="---")
+
+	def read22 = read.takeWhile(_!="0").map{_.sInt}.grouped(2).map{_.tuple2}
 
 	def read21 = readIter(readTail)
 

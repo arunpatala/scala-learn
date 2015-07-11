@@ -2,7 +2,7 @@ import scala.io.Source
 
 object Main extends App{
 	import Util._
-	read3.map{x => (1 to x.toInt).map(i=>i*i).sum}.foreach(println)
+	read3.map(_.toInt).filter(x=>1<=x && x<=100).map{x => (1 to x).map(i=>i*i).sum}.foreach(println)
 }
 
 object Util{

@@ -5,13 +5,14 @@ import scala.math.max
 
 
 object Main extends App{
+	import Util._
 	read23.map{
-		s.foldLeft((0,0)){ case((n,total),c) =>
-			if(c=='{'} (n+1,total)
+		_.foldLeft((0,0)){ case((n,total),c) =>
+			if(c=='{') (n+1,total)
 			else if(n>0) (n-1,total)
 			else (n,total+1)
 		}
-	}
+	}.printn
 
 }
 

@@ -9,10 +9,19 @@ object Main extends App{
 		val n = a.size
 		val m = b.size
 		val Z = Array.ofDim[Int](n+1,m+1)
-		for(i<-0 until n)
-			for(j<-0 until m)
+		/*for(i<-0 until n;
+			j<-0 until m){
 				if(a(i)==b(j)) Z(i+1)(j+1) = Z(i)(j)
 				else Z(i+1)(j+1) = 1+min(Z(i+1)(j),Z(i)(j+1))
+		}*/
+
+		for(i<-1 to n) Z(i)(0) = i
+		for(j<-1 to m) Z(0)(j) = j
+		for(i<-1 to n;
+			j<-1 to m){
+				if(a(i-1)==b(j-1)) Z(i)(j) = Z(i-1)(j-1)
+				else Z(i)(j) = 1+min(Z(i)(j-1),min(Z(i-1)(j),Z(i-1)(j-1)))
+		}
 
 		Z(n)(m)
 	}.printn

@@ -5,9 +5,10 @@ import scala.annotation.tailrec
 object Main extends App{
 	import Util._
 	read19.map{ case (l1,l2) =>
-		val h1 = l1.sorted.head
-		val h2 = l2.sorted(2)
-		if(h1>=h2) "N" else "Y"
+		val h1 = l1.max
+		val lst = l2.filter(_<=h1).size
+		if(lst>=2) "N" else "Y"
+
 	}.printn
 }
 

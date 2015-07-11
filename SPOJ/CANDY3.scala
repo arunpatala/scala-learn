@@ -4,7 +4,7 @@ object Main extends App{
 	import Util._
 	read7.map{_.map{_.toLong}}.map{ l:List[Long] =>
 		val n = l.size
-		val sum = l.map(_%n).reduce{(l1:Long,l2:Long)=>(l1+l2)%n}
+		val sum = l.map(_%n).reduce{(l1:Long,l2:Long)=>((l1+l2)%n).toLong}
 		if(sum%l.size!=0) "NO"
 		else "YES"
 	}.printn

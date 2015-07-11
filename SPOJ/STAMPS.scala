@@ -10,8 +10,9 @@ object Main extends App{
 				case None => "impossible"
 			}
 	}.zipWithIndex.foreach{ case(o,i) =>
-		println("Scenario #"+i+":");
+		println("Scenario #"+(i+1)+":");
 		println(o)		
+		println()
 	}	
 }
 

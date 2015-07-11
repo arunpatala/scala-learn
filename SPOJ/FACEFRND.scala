@@ -6,13 +6,13 @@ import scala.math.max
 
 object Main extends App{
 	import Util._
-	val map = readTail.grouped(2).map{_(1).sInt.toList}.map{ l=>
+	val map = readTail.map{_.sInt.toList}.map{ l=>
 		val id = l(0)
 		val lst = l.tail.tail
 		(id,lst)
 	}.toMap
 
-	val n = map.values.flatten.toSet - map.keys.toSet
+	val n = map.values.flatten.toSet.diff(map.keys.toSet)
 	println(n.size)
 
 	

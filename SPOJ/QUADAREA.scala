@@ -7,9 +7,9 @@ import scala.annotation.tailrec
 
 object Main extends App{
 	import Util._
-	readTail.sInt.map{ l =>
+	readTail.map(_.split(" ").map(_.toDouble)).map{ l =>
 		0.5*(l(2)*l(0)+l(1)*l(3))
-	}.map("%2d" format _).printn
+	}.map("%.2f" format _).printn
 
 }
 

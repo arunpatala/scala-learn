@@ -2,13 +2,20 @@ import scala.io.Source
 
 object Main extends App{
 	import Util._
-	read11.map{ s=>
-		s.foldLeft((0,1,'9')){
-			case((ns2,ns1,s1),si) =>
-				if((s1+""+si).toInt<=26) (ns1,ns2+ns1,si)
-				else (ns1,ns1,si)
-		}
-	}.map{_._2}.printn
+	read11.map(_.map(_-'0')).map{ s =>
+		val n = s.size
+		val DP = Array.ofDim[Int](n+1)
+		DP(0) = 1
+		DP(1) = 1
+		for(i<-2 to n)
+			if(s(i-2)==0)DP(i) = DP(i-1)
+			else if(s(i-1)==0) DP(i) = DP(i-2)
+			else if(s(i-2)*10+s(i-1)<=26)  DP(i)=DP(i-1)+DP(i-2)
+			else DP(i)=DP(i-1)
+
+		DP(n)
+	
+	}.printn
 }
 
 object Util{

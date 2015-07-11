@@ -1,17 +1,17 @@
 import scala.io.Source
 import scala.annotation.tailrec
-import scala.math.max
+import scala.math.min
 
 
 object Main extends App{
-
-	val imap = SortedMap[Char,Int]() + ('a' to 'z').map{x=> x -> 0 }
+	import Util._
+	val imap = scala.collection.SortedMap[Char,Int]() ++ ('a' to 'z').map{x=> x -> 0 }.toMap
 	read.grouped(2).map{ l =>
 		val d1 = imap ++ l(0).groupBy(x=>x).mapValues(_.size)
 		val d2 = imap ++ l(1).groupBy(x=>x).mapValues(_.size)
 		val d12 = d1.zip(d2).map{ case((a1,s1),(a2,s2)) => (a1,min(s1,s2)) }
-		d12.map{ case(a,s) =>
-			a.make(s).mkString
+		d12.flatMap{ case(a,s) =>
+			List.make(s,a)
 		}.mkString
 	}.printn
 

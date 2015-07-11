@@ -1,9 +1,6 @@
 import scala.io.Source
 import scala.annotation.tailrec
 import scala.math.max
-import scala.annotation.tailrec
-
-
 
 object Main extends App{
 	import Util._
@@ -14,13 +11,12 @@ object Main extends App{
 
 		def neigh(xy:(Int,Int)) = xy match { case(x,y) => List((x-1,y),(x+1,y),(x,y-1),(x,y+1)).filter{case(x,y) => x>=0 && y>=0 && x<n && y<m}} 
 
-		def dist(us:List[(Int,Int)],h:Int):Unit = if(!us.isEmpty){
+		@tailrec def dist(us:List[(Int,Int)],h:Int):Unit = if(!us.isEmpty){
 			val vs = us.flatMap(neigh).filter{case(i,j)=>Z(i)(j)==0}
 			vs.foreach{case(i,j) => Z(i)(j)=h}
 			dist(vs,h+1)
 		}
 		val us = for(i<-0 until n;j<-0 until m;if(l(i)(j)=='1')) yield {Z(i)(j)=1;(i,j)}
-		println(us.toList)
 		dist(us.toList,2)
 		Z.map{_.map(_-1).mkString(" ")}.mkString("\n")
 	}.printn

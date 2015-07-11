@@ -5,16 +5,14 @@ import scala.annotation.tailrec
 object Main extends App{
 	import Util._
 	read18.map{l =>
-		val l1 = (l-1)
-		val l3 = l1/3
-		val n = ((math.sqrt(1+4*l3)-1)/2)
+		val n = (math.sqrt(9+12*(l-1))-3)/6
 		if(n.floor==n) "Y" else "N"
 	}.printn
 }
 
 object Util{
 
-	def read18 = readUntil("-1").toInt
+	def read18 = readUntil("-1").map(_.toLong)
 	def readUntil(str:String) = read.takeWhile(_!=str)
 	def read17 = readTail.map{_.sInt.toList.tuple2}.toList
 	def read16 = read.map{_.sInt.toList.tuple2}.toList

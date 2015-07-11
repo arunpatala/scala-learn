@@ -4,32 +4,31 @@ import scala.annotation.tailrec
 
 object Main extends App{
 	import Util._
-	def icount(l:List[Int]):Int = {
-		var cnt = 0
-		def qsort(l:List[Int]):List[Int] = if(l.size<=1) l 
-			else {
-				val mid = l(0)
-				val left = l.filter(_<mid)
-				val right = l.filter(_>mid)
-				cnt = cnt + left.size
-				qsort(left) ++ List(mid) ++ qsort(right)
+
+	def invcnt(l:List[Int]) = {
+		var cnt = 0L;
+		def mergesort(l:List[Int]):List[Int] = if(l.size<=1) l 
+			else{
+				@tailrec def merge(left:List[Int],right:List[Int],merger:List[Int]):List[Int] =  
+				(left,right) match {
+					case (Nil,Nil) => merger.reverse
+					case (Nil,rh::rt) => merge(Nil,rt,rh::merger)
+					case (lh::lt,Nil) => merge(lt,Nil,lh::merger)
+					case (lh::lt, rh::rt) => if(lh<rh) merge(lt,right,lh::merger) 
+								else {cnt=cnt+left.size;merge(left,rt,rh::merger)}
+				}
+				val (left,right) = l.splitAt(l.size/2)
+				merge(mergesort(left),mergesort(right),List())
 			}
-		qsort(l)
+		mergesort(l);
 		cnt
 	}
-
-	read7.map{_.tail.toInt.toList}.map{
-		icount
-	}.printn
-	
+	//println(mergesort(List(2,3,8,6,1)))
+	read7.map{_.tail.toInt.toList}.map(invcnt).printn
 }
 
-
 object Util{
-	def read18 = read.toInt
-	def read17 = readTail.map{_.sInt.toList}
-	def read16 = readUntil("-1 -1").map{_.sInt.toList.tuple2}
-	def readUntil(str:String) = read.takeWhile(_!=str)
+
 	def read15 = read11.grouped(2).map(_(1).sInt)
 
 	def round(d:Double) = BigDecimal(d).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble

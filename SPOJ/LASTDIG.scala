@@ -6,9 +6,13 @@ object Main extends App{
 	val l = List(0) :: (1 to 9).map{i =>
 		i :: Stream.from(2).map{math.pow(i,_).toInt%10}.takeWhile(_!=i).toList
 	}.toList
+	//l.foreach(println)
 	read2.map{ case(x,y) =>
-		val li = l(x%10)
-		li(((y%li.size)-1+li.size)%li.size)
+		if(x==0 && y==0) 1
+		else if(x==0) 0
+		else if(y==0) 1
+		else{ val li = l(x%10)
+		li(((y%li.size)-1+li.size)%li.size) }
 	}.foreach(println)
 
 }

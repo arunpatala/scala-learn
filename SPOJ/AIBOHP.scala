@@ -1,50 +1,39 @@
 import scala.io.Source
 import scala.annotation.tailrec
-import scala.math._
+import scala.math.min
+
 
 
 object Main extends App{
 	import Util._
-	read18.map{ case(a,b) =>
-		val n = a.size
-		val m = b.size
-		val Z = Array.ofDim[Int](n+1,m+1)
-		for(i<-0 until n)
-			for(j<-0 until m)
-				if(a(i)==b(j)) Z(i+1)(j+1) = Z(i)(j)
-				else Z(i+1)(j+1) = 1+min(Z(i+1)(j),Z(i)(j+1))
-
-		Z(n)(m)
+	
+	def palin(S:String) = {
+		val N = S.size
+		val Z = Array.ofDim[Int](N+2,N+2) 
+		for(l<-1 to N;i<-1 to N-l+1)
+		{
+			val j = i+l-1
+			Z(i)(j) = if(S(i-1)==S(j-1))  Z(i+1)(j-1)
+					else 1+min(Z(i+1)(j),Z(i)(j-1))
+		}
+		Z(1)(N)
+	}
+	readTail.map{
+		palin
 	}.printn
 
 }
 
 object Util{
 
-	def read18 = readTail.grouped(2).map{_.tuple2}
-	def read17 = readTail.map{_.sInt.toList.tuple2}.toList
-	def read16 = read.map{_.sInt.toList.tuple2}.toList
 
-	def read15 = read11.grouped(2).map(_(1).sInt)
+	def read21 = readIter(readTail)
 
-	def round(d:Double) = BigDecimal(d).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
-	def read13 = read.takeWhile(_!="0").toInt
-	def read12 = readTail.grouped(4).map(l=>(l(2).sInt,l(3).sInt))
-	def read11 = read.takeWhile(_!="0")
-	def read10 = readTail.toInt
-	def read9 = read.takeWhile(_!="0").grouped(2).map(_(1).split(" ").map{_.toInt})
-	def read8 = read.map{_.toDouble}.takeWhile(_!=0)
-	def read7 = {
-		def grp[T](iter:Iterator[T]):Stream[List[T]] = 
-			if(!iter.hasNext) Stream.Empty
-			else iter.takeWhile(_!="").toList #:: grp(iter)
-		grp(readTail.tail)
-	}
-
-	def read6 = read.toInt.takeWhile(_ != -1)
-
-	def read5 = read.map(_.split(" ").toInt.toArray).takeWhile{l=>(!(l(0)==0&&l(1)==0&&l(2)==0))}
-        def read = Source.fromInputStream(System.in).getLines().takeWhile(_!=null)
+	def readIter(read:Iterator[String]):Stream[List[Int]] = if(read.isEmpty) Stream.Empty
+						else read.next.sInt.toList.tuple2 match{ case(n,m) =>
+								(m::read.take(n).toList.toInt.toList) #:: readIter(read)
+						}
+	def read = Source.fromInputStream(System.in).getLines().takeWhile(_!=null)
         def readTail =  read.tail
         def readTailTuple2 = readTail.map(_.split(" ").toList.tuple2)
         def readTailIntTuple2 = readTail.map(_.split(" ").map(_.toInt).toList.tuple2)
@@ -94,6 +83,19 @@ object Util{
 		}
 		fret
 	}
+	def memoize2[A,B](f:(A=>B),b:B):(A=>B) = {
+		val map = scala.collection.mutable.Map[A,B]()
+		def fret(a:A) = {
+			println(a)
+			if(!map.contains(a)) {
+				map(a) = b
+				map(a) = f(a)
+			}
+			map(a)
+		}
+		fret
+	}
+
 
 
 

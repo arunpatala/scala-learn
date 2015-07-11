@@ -7,24 +7,20 @@ object Main extends App{
 	val l = read16
 	val N = l.head._1
 	val M = l.head._2
-	val edges = l.tail.flatMap{case(u,v)=>List((u,v),(v,u))}
-			.groupBy(_._1).mapValues(_.map(_._2))
-	val vd = (1 to N).map{x=>false}.toVector
+	val edges = Array.fill(N+1)(List[Int]())
+	l.tail.foreach{case(x,y) => edges(x) = y::edges(x);edges(y)=x::edges(y);}
+	//val edges = l.tail.flatMap{case(u,v)=>List((u,v),(v,u))}
+	//		.groupBy(_._1).mapValues(_.map(_._2))
+	val visited = Array.ofDim[Boolean](edges.size+1)
 
-	def visit(us:List[Int]) = if(us.isEmpty) true
-				  else {
-					  val u = us.head
-					  val vs = edges(u)
-					  val bool = vs.find()!=None
-					  if(bool) false
-					  else {
-						  vs.map{vd(_)=true}
-					 }
-
-
-				  }
-
-	edges.toSeq.printn
+	def DFS(i:Int,p:Int):Boolean = {
+		visited(i) = true
+		val neigh = edges(i).filter(_!=p)
+		neigh.find{x => (visited(x)==false && DFS(x,i))==false}==None
+	}
+	val bool = (1 to N).find{x=>visited(x)==false && DFS(x,-1)==false}==None
+	val out = if(bool)"YES" else "NO"
+	println(out)
 }
 
 object Util{

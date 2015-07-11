@@ -2,10 +2,10 @@ import scala.io.Source
 
 object Main extends App{
 	import Util._
-	read13.foreach{ L =>
+	read13.map{ L =>
 		val d = (L*L)/(2*math.Pi)
-		println(round(d))
-	}
+		"%.2f" format d
+	}.printn
 }
 
 object Util{
