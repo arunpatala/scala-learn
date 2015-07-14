@@ -12,23 +12,17 @@ class Main{
 		PrintWriter out = new PrintWriter(System.out);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = parseInt(br.readLine());
-		int sqrtN = ceil(sqrt(N));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int[] A = new int[N+1];
-		int[] sA = new int[sqrtN];
 		int[] S = new int[N+1];
 		for(int i=1;i<=N;i++) {
 			A[i] = parseInt(st.nextToken());
 			S[i] = S[i-1]+A[i];
 		}
-		for(int i=0;i<sqrtN;i++)
-			for(int j=1;j<=sqrtN;j++)
-				if((i*sqrtN+j)<=N)
-				sA[i]+=A[i*sqrtN+j];
 
-
+		System.out.println(new Node(A,0,A.length-1));
 		int M = parseInt(br.readLine());
-		while(M--!=0)
+		/*(while(M--!=0)
 		{
 			st = new StringTokenizer(br.readLine());
 			int x = parseInt(st.nextToken());
@@ -41,10 +35,36 @@ class Main{
 			for(int xi=x;xi<xs*sqrtN;xi++)
 				sum 
 			System.out.println(mx);
-		}
+		}*/
 		out.flush();
 		out.close();
 		br.close();
 	}
 
 }
+
+class Node{
+
+	Node left;
+	Node right;
+	int i,j;
+	int[] A;
+	int sum;
+	public Node(int[] A, int i, int j){
+		this.i = i;
+		this.j = j;
+		this.A = A;
+		for(int k=i;k<=j;k++)sum+=A[k];
+		if(i!=j){
+			int mid = (i+j)/2;
+			left = new Node(A,i,mid);
+			right = new Node(A,mid+1,j);
+		}
+	}
+
+	public String toString(){
+		return "("+left+"["+i+","+j+"]"+right+")";
+	}
+
+}
+

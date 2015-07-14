@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-import static java.lang.Math.min;
+import static java.lang.Math.max;
 import static java.lang.Integer.parseInt;
 
 class Main{
@@ -19,19 +19,29 @@ class Main{
 			if(num==0 && budget==0)break;
 			int[] francs = new int[num];
 			int[] fun = new int[num];
-			for(int i=0;i<N;i++){
+			for(int i=0;i<num;i++){
 				st = new StringTokenizer(br.readLine());
 				francs[i] = parseInt(st.nextToken());
 				fun[i] = parseInt(st.nextToken());
 			}
-			int[][] funCost = int[][];
-			for(int p=0;p<N;p++)
+			int[][] funCost = new int[num][budget+1];
+			for(int b=0;b<=budget;b++)
+				if(b>=francs[0])
+					funCost[0][b] = fun[0];
+			for(int p=1;p<num;p++)
+			{
 				for(int b=0;b<=budget;b++)
 				{
 					if(b>=francs[p])
-						funCost[b][p] = fun[p] + funCost[b-francs[p]][p-1] 
-					funCost[b][p] = max(funCost[b][p], funCost[b][p-1])
+						funCost[p][b] = fun[p] + funCost[p-1][b-francs[p]];
+					funCost[p][b] = max(funCost[p][b], funCost[p-1][b]);
+					//System.out.print(funCost[p][b]+" ");
 				}
+				//System.out.println();
+			}
+			int ci = budget;
+			while(funCost[num-1][budget]==funCost[num-1][ci])ci--;
+			out.printf("%d %d\n",ci+1,funCost[num-1][ci+1]);
 
 			br.readLine();
 		}
@@ -41,45 +51,3 @@ class Main{
 	}
 
 }
-
-class Grid{
-	int[][] H;
-	char[][] A;
-	int N;
-	int M;
-
-	public Grid(char[][] Ac, int Nc, int Mc){
-		A = Ac; N = Nc;M = Mc;
-		H = new int[N][M];
-		BFS();
-	}
-
-	public void BFS(){
-		List<Integer> points = new LinkedList<Integer>();
-		for(int i=0;i<N;i++)
-			for(int j=0;j<M;j++)
-				if(A[i][j]=='1'){
-					points.add(i);
-					points.add(j);
-					H[i][j]=1;
-				}
-		
-		int h = 1;
-		while(points.size()!=0)
-		{
-			List<Integer> nextPoints = new LinkedList<Integer>();
-			h++;
-			for(int i=0;i<points.size();i+=2)
-			{
-				int x = points.get(i);
-				int y = points.get(i+1);
-				if((x-1)>=0 && H[x-1][y]==0){H[x-1][y]=h;nextPoints.add(x-1);nextPoints.add(y);}
-				if((x+1)<N && H[x+1][y]==0){H[x+1][y]=h;nextPoints.add(x+1);nextPoints.add(y);}
-				if((y-1)>=0 && H[x][y-1]==0){H[x][y-1]=h;nextPoints.add(x);nextPoints.add(y-1);}
-				if((y+1)<M && H[x][y+1]==0){H[x][y+1]=h;nextPoints.add(x);nextPoints.add(y+1);}
-			}
-			points = nextPoints;
-		}
-	}
-}
-
