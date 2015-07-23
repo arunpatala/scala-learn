@@ -5,27 +5,26 @@ import static java.lang.Integer.parseInt;
 
 class Main{
 
+
+
 	public static void main(String[] args) throws IOException{	
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		PrintWriter out = new PrintWriter(System.out);
 		int N = parseInt(br.readLine());
 		int[] A = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=0;i<N;i++)A[i]=parseInt(st.nextToken());
-		int K = parseInt(br.readLine());
-		PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
-		for(int i=0;i<K-1;i++)
-			queue.add(-A[i]);
-		for(int i=K-1;i<N;i++)
-		{
-			queue.add(-A[i]);
-			out.printf("%d ",-queue.peek());
-		}
-		out.printf("\n");
-		out.flush();
-		out.close();
+		for(int i=0;i<N;i++)
+			A[i] = parseInt(st.nextToken());
+		int[] B = new int[N];
+		st = new StringTokenizer(br.readLine());
+		for(int i=0;i<N;i++)
+			B[i] = parseInt(st.nextToken());
+		int[] C = new int[N];
+		st = new StringTokenizer(br.readLine());
+		for(int i=0;i<N;i++)
+			C[i] = parseInt(st.nextToken());
 		br.close();
 	}
+
 
 }

@@ -12,16 +12,14 @@ class Main{
 		int N = parseInt(br.readLine());
 		int[] A = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=0;i<N;i++)A[i]=parseInt(st.nextToken());
-		int K = parseInt(br.readLine());
 		PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
-		for(int i=0;i<K-1;i++)
+		for(int i=0;i<N;i++){
+			A[i]=parseInt(st.nextToken());
 			queue.add(-A[i]);
-		for(int i=K-1;i<N;i++)
-		{
-			queue.add(-A[i]);
-			out.printf("%d ",-queue.peek());
 		}
+		int K = parseInt(br.readLine());
+		for(int i=K-1;i<N;i++)
+			out.printf("%d ",A[i]);
 		out.printf("\n");
 		out.flush();
 		out.close();

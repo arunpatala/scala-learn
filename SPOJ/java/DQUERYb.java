@@ -5,26 +5,12 @@ import static java.lang.Integer.parseInt;
 
 
 class Node{
-	int[] C;
-	int length = 0;
+	int sum = 0;
 	public Node(int a){
-		C = new int[]{a};
-		length = 1;
+		sum = a;
 	}
 	public Node(Node l, Node r){
-		int[] A = l.C;
-		int[] B = r.C;
-		int ai=0,bi=0,ci=0;
-		int al=l.length,bl=r.length;
-		C = new int[al+bl];
-		while(ai<al&&bi<bl){
-			if(A[ai]==B[bi]){C[ci++]=A[ai++];bi++;}
-			else if(A[ai]<B[bi]){C[ci++]=A[ai++];}
-			else C[ci++] = B[bi++];
-		}
-		while(ai<al)C[ci++]=A[ai++];
-		while(bi<bl)C[ci++]=B[bi++];
-		length = ci;
+		sum = l.sum + r.sum;
 	}
 }
 
@@ -47,7 +33,7 @@ class Tree{
 			nodes[i] = new Node(nodes[l],nodes[r]);
 		}
 	}
-	public int query(int i, int j){return query(1,0,L-1,i,j).length;}
+	public int query(int i, int j){return query(1,0,L-1,i,j).sum;}
 	public Node query(int idx, int lo,int hi, int i, int j){
 		if(lo==i&&j==hi)return nodes[idx];
 		else{
@@ -76,6 +62,13 @@ class Main{
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i=0;i<N;i++)
 			A[i] = parseInt(st.nextToken());
+
+	for (int i = 0; i < n; ++i) {
+		if (posOfLast[a[i]] != -1)
+			cnt[posOfLast[a[i]]]--;
+		posOfLast[a[i]] = i;
+		cnt[posOfLast[a[i]]]++;
+
 		Tree ST = new Tree(A);
 		int M = parseInt(br.readLine());
 		while(M--!=0)

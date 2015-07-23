@@ -12,6 +12,7 @@ class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = parseInt(br.readLine());
 		int N = T;
+		int NN = N*N;
 		int[] A = new int[T];
 		int[] B = new int[T];
 		int[] C = new int[T];
@@ -24,21 +25,31 @@ class Main{
 			C[t] = parseInt(st.nextToken());	
 			D[t] = parseInt(st.nextToken());	
 		}
-		int[] ab = new int[N*N];
+		int[] ab = new int[NN];
 		for(int a=0;a<T;a++)
 			for(int b=0;b<T;b++)
 				ab[a*N+b] = (A[a]+B[b]);
 		Arrays.sort(ab);
-		int[] cd = new int[N*N];
+		int[] cd = new int[NN];
 		for(int a=0;a<T;a++)
 			for(int b=0;b<T;b++)
-				cd[a*N+b] = C[a]+D[b];
+				cd[a*N+b] = -(C[a]+D[b]);
 		Arrays.sort(cd);
-		int ret =0;
-		for(int i:ab)
-			if(Arrays.binarySearch(cd,-i)>=0)ret++;
+		int ret = 0;
+		int i=0, j=0;
+		while(i<NN&&j<NN)
+		{
+			if(ab[i]<cd[j])i++;
+			else if(ab[i]>cd[j])j++;
+			else{
+				int e = ab[i];
+				int e1 = 0, e2 =0;
+				while(ab[i]==e){i++;e1++;}
+				while(cd[j]==e){j++;e2++;}
+				ret += (e1*e2);
+			}
+		}
 		System.out.println(ret);
-
 		br.close();
 	}
 
