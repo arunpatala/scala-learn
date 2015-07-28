@@ -7,15 +7,20 @@ import static java.lang.Math.pow;
 
 class Main{
 
-	public static long convert(long n){
-		long size = 1;
-		long ten = 1;
+
+	public static long next(long n){
 		long ret = 0;
-		while(size<=n){
-			if((n & size)==size) ret = ret + ten;
-			size <<=1;
-			ten = ten * 10;
+		int carry= 1;
+		long pow = 1;
+		while(n!=0){
+			long i=n%10;
+			ret = pow*((carry+i)%2)+ret;
+			if(carry==1&&i==1)carry=1;
+			else carry =0;
+			n=n/10;
+			pow = pow*10;
 		}
+		ret = pow*carry+ret;
 		return ret;
 	}
 
@@ -23,13 +28,17 @@ class Main{
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = parseInt(br.readLine());
+		List<Long> li = new LinkedList<>();
+		long i = 1;
+		while(i<(1L<<62)){
+			li.add(i);
+			i = next(i);
+		}
+		System.out.println(li.size());
 		while(T--!=0)
 		{
 			long A = parseLong(br.readLine());
-			long i = 1;
-			while(convert(i)<A)i++;
-			while(convert(i)%A!=0)i++;
-			System.out.println(convert(i));
+			System.out.println(i);
 		}
 		br.close();
 	}

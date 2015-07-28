@@ -15,6 +15,9 @@ void primes(){
 				P[j]=0;
 	for(i=2;i<=N;i++)
 		if(P[i]) PP[PSIZE++] = i;
+	for(i=0;i<PSIZE;i++)
+		printf("%d,",PP[i]);
+	printf("\n");
 
 }
 
@@ -30,7 +33,7 @@ int main(){
 		scanf("%d%d",&A,&B);
 		ret = 1;
 		g = gcd(A,B);
-		for(i=0;PP[i]<=g;i++)
+		for(i=0;i<PSIZE&&PP[i]<=g;i++)
 			{
 				p = PP[i];
 				a=g;ai=0;

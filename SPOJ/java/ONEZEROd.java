@@ -7,29 +7,35 @@ import static java.lang.Math.pow;
 
 class Main{
 
-	public static long convert(long n){
-		long size = 1;
-		long ten = 1;
-		long ret = 0;
-		while(size<=n){
-			if((n & size)==size) ret = ret + ten;
-			size <<=1;
-			ten = ten * 10;
-		}
-		return ret;
-	}
 
 	public static void main(String[] args) throws IOException{	
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		List<Long> L = new LinkedList<>();
+		List<Long> BFS = new LinkedList<>();
+		BFS.add(1L);
+		while(true){
+			long l = BFS.remove(0);
+			//System.out.println(l);
+			if(l>(1L<<62))break;
+			//if(l>1000000)break;
+			L.add(l);
+			BFS.add(l*10);
+			BFS.add(l*10+1);
+		}
+		//System.out.println(L.size());
+
 		int T = parseInt(br.readLine());
 		while(T--!=0)
 		{
 			long A = parseLong(br.readLine());
-			long i = 1;
-			while(convert(i)<A)i++;
-			while(convert(i)%A!=0)i++;
-			System.out.println(convert(i));
+			for(long l:L)
+			{
+				if(l>=A&&l%A==0){
+					System.out.println(l);
+					break;
+				}
+			}
 		}
 		br.close();
 	}
