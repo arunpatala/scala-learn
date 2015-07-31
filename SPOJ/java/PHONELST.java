@@ -5,48 +5,52 @@ import static java.lang.Integer.parseInt;
 
 class Main{
 
-
-
 	public static void main(String[] args) throws IOException{	
-
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = parseInt(br.readLine());
 		while(T--!=0){
 			int N = parseInt(br.readLine());
-			TrieNode t = new TrieNode(false);
+			TrieNode t = new TrieNode();
 			boolean valid = true;
-			for(int i=0;i<N&&valid;i++)
-				valid = valid && t.insert(br.readLine());
-			if(valid) System.out.println("YES");
-			else System.out.println("NO");
+			for(int i=0;i<N;i++)
+				valid = valid && insert(br.readLine(),t);
+			System.out.println(t.strings());
+			if(valid)
+				System.out.println("YES");
+			else 
+				System.out.println("NO");
 		}
-
 		br.close();
+	}
+
+	public static boolean insert(String s, TrieNode t)
+	{
+		int k=0;
+		while(k<s.length())
+		{
+			int i=s.charAt(k)-'0';
+			if(t.child[i]==null)
+			{
+				t.child[i]=new TrieNode();
+			}else{
+				if(k==s.length()-1)return false;
+			}
+			t=t.child[i];
+			if(t.end)return false;
+			k++;
+		}
+		t.end=true;
+		return true;
 	}
 
 }
 class TrieNode{
-
 	TrieNode[] child;
-	boolean end;
-	public TrieNode(boolean end){
+	boolean end=false;
+	public TrieNode(){
 		child = new TrieNode[10];
-		this.end = end;
 	}
 
-	public boolean insert(String str){
-		int i = str.charAt(0)-'0';
-		boolean e = str.length()==1;
-		if(end) { return false;}
-		if(child[i]==null)
-			child[i] = new TrieNode(e);
-		else if(e) 
-		{return false;}
-		if(!e)
-			if(!child[i].insert(str.substring(1)))
-			{ return false;}
-		return true;
-	}
 	public List<String> strings(){
 		List<String> ret = new LinkedList<>();
 		if(end) ret.add("");
@@ -58,4 +62,5 @@ class TrieNode{
 		return ret;
 
 	}
+
 }

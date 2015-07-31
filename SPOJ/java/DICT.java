@@ -18,8 +18,11 @@ class Main{
 			System.out.println("Case #"+i+":");
 			String si = br.readLine();
 			List<String> s = t.search(si);
+			System.out.println(s);
 			if(s.size()==0)System.out.println("No match.");
-			else for(String str:s) if(!str.equals(""))System.out.println(si+str);
+			else for(String str:s) 
+				if(!str.equals(""))
+				System.out.println(si+str);
 		}
 
 		br.close();
@@ -54,7 +57,7 @@ class TrieNode{
 	public List<String> strings(){
 		List<String> ret = new LinkedList<>();
 		if(end) ret.add("");
-		for(int i=0;i<=25;i++)
+		for(int i=0;i<26;i++)
 			if(child[i]!=null)
 				for(String s:child[i].strings())
 					ret.add(((char)(i+'a'))+s);

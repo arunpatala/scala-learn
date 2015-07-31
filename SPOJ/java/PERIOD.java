@@ -6,14 +6,13 @@ class Main{
 	public static void main(String[] args) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		while(true)
+		int T = parseInt(br.readLine());
+		for(int t=1;t<=T;t++)
 		{
-			if(br.readLine()==null)break;
+			br.readLine();
 			String needle = br.readLine();
-			String hay = br.readLine();
-			List<Integer> lst = search(hay,needle,lps(needle));
-			for(int i:lst)
-				System.out.println(i);
+			System.out.println("Test case #"+t);
+			lps(needle);
 			System.out.println();
 		}
 
@@ -23,42 +22,34 @@ class Main{
 	{
 		int N = needle.length();
 		int[] T = new int[N];
+		int[] K = new int[N];
 		char[] A = needle.toCharArray();
 		int j = 0, i = 0;
+		K[0]=1;
 		T[i++]=0;
 		while(i<N)
 		{
 			if(A[i]==A[j]){
 				j++;
 				T[i]=j;
+				int l = i-(j-1);
+				if((1+K[j-1])*l==(i+1))
+					K[i]=1+K[j-1];
+				else K[i]=1;
 				i++;
 			}else if(j==0)
 			{
 				T[i]=0;
+				K[i]=1;
 				i++;
 			}
 			else {
 				j=T[j-1];
 			}
 		}
+		for(i=0;i<N;i++)
+			if(K[i]>1)
+				System.out.println((i+1)+" "+K[i]);
 		return T;
-	}
-
-
-	public static List<Integer> search(String hay, String needle, int[] T)
-	{
-		List<Integer> lst = new LinkedList<>();
-		char[] A = hay.toCharArray();
-		char[] B = needle.toCharArray();
-		int j = 0, i = 0;
-		while(i<hay.length())
-		{
-			if(A[i]==B[j]){j++;i++;}
-			else if(j==0)i++;
-			else j=T[j-1];
-
-			if(j==B.length){lst.add(i-j);j=T[j-1];}
-		}
-		return lst;
 	}
 }

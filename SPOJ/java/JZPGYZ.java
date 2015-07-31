@@ -6,17 +6,23 @@ class Main{
 	public static void main(String[] args) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		while(true)
-		{
-			if(br.readLine()==null)break;
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = parseInt(st.nextToken());
+		int M = parseInt(st.nextToken());
+		String[] S = new String[N];
+		for(int i=0;i<N;i++)S[i]=br.readLine();
+		for(int i=0;i<M;i++){
 			String needle = br.readLine();
-			String hay = br.readLine();
-			List<Integer> lst = search(hay,needle,lps(needle));
-			for(int i:lst)
-				System.out.println(i);
-			System.out.println();
+			int[] lps = lps(needle);
+			int cnt = 0;
+			for(int j=0;j<N;j++)
+			{
+				String hay = S[j];
+				if(search(hay,needle,lps))
+					cnt++;
+			}
+			System.out.println(cnt);
 		}
-
 	}
 
 	public static int[] lps(String needle)
@@ -45,7 +51,7 @@ class Main{
 	}
 
 
-	public static List<Integer> search(String hay, String needle, int[] T)
+	public static boolean search(String hay, String needle, int[] T)
 	{
 		List<Integer> lst = new LinkedList<>();
 		char[] A = hay.toCharArray();
@@ -57,8 +63,8 @@ class Main{
 			else if(j==0)i++;
 			else j=T[j-1];
 
-			if(j==B.length){lst.add(i-j);j=T[j-1];}
+			if(j==B.length){return true;}
 		}
-		return lst;
+		return false;
 	}
 }

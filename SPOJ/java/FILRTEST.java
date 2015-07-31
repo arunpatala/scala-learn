@@ -8,13 +8,17 @@ class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while(true)
 		{
-			if(br.readLine()==null)break;
-			String needle = br.readLine();
-			String hay = br.readLine();
-			List<Integer> lst = search(hay,needle,lps(needle));
-			for(int i:lst)
-				System.out.println(i);
-			System.out.println();
+			String s = br.readLine();
+			StringTokenizer st = new StringTokenizer(s);
+			int N = parseInt(st.nextToken());
+			if(N==-1)break;
+			String A = st.nextToken();
+			int M = A.length();
+			int[] T = lps(A);
+			int K = T[M-1];
+			if(L<N)System.out.println(0);
+			else if(M==K)System.out.println(N);
+			else System.out.println(N/(M-K));
 		}
 
 	}

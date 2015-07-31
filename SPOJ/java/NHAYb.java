@@ -10,8 +10,7 @@ class Main{
 		{
 			if(br.readLine()==null)break;
 			String needle = br.readLine();
-			String hay = br.readLine();
-			List<Integer> lst = search(hay,needle,lps(needle));
+			List<Integer> lst = search(br,needle,lps(needle));
 			for(int i:lst)
 				System.out.println(i);
 			System.out.println();
@@ -45,16 +44,16 @@ class Main{
 	}
 
 
-	public static List<Integer> search(String hay, String needle, int[] T)
+	public static List<Integer> search(BufferedReader br,String needle, int[] T) throws IOException
 	{
 		List<Integer> lst = new LinkedList<>();
-		char[] A = hay.toCharArray();
+		char A = (char)(br.read());
 		char[] B = needle.toCharArray();
 		int j = 0, i = 0;
-		while(i<hay.length())
+		while(A!='\n')
 		{
-			if(A[i]==B[j]){j++;i++;}
-			else if(j==0)i++;
+			if(A==B[j]){j++;A=(char)(br.read());i++;}
+			else if(j==0){A=(char)(br.read());i++;}
 			else j=T[j-1];
 
 			if(j==B.length){lst.add(i-j);j=T[j-1];}

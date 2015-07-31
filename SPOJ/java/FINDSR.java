@@ -8,13 +8,9 @@ class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while(true)
 		{
-			if(br.readLine()==null)break;
 			String needle = br.readLine();
-			String hay = br.readLine();
-			List<Integer> lst = search(hay,needle,lps(needle));
-			for(int i:lst)
-				System.out.println(i);
-			System.out.println();
+			if(needle.equals("*"))break;
+			lps(needle);
 		}
 
 	}
@@ -23,42 +19,32 @@ class Main{
 	{
 		int N = needle.length();
 		int[] T = new int[N];
+		int[] K = new int[N];
 		char[] A = needle.toCharArray();
 		int j = 0, i = 0;
+		K[0]=1;
 		T[i++]=0;
 		while(i<N)
 		{
 			if(A[i]==A[j]){
 				j++;
 				T[i]=j;
+				int l = i-(j-1);
+				if((1+K[j-1])*l==(i+1))
+					K[i]=1+K[j-1];
+				else K[i]=1;
 				i++;
 			}else if(j==0)
 			{
 				T[i]=0;
+				K[i]=1;
 				i++;
 			}
 			else {
 				j=T[j-1];
 			}
 		}
+		System.out.println(K[N-1]);
 		return T;
-	}
-
-
-	public static List<Integer> search(String hay, String needle, int[] T)
-	{
-		List<Integer> lst = new LinkedList<>();
-		char[] A = hay.toCharArray();
-		char[] B = needle.toCharArray();
-		int j = 0, i = 0;
-		while(i<hay.length())
-		{
-			if(A[i]==B[j]){j++;i++;}
-			else if(j==0)i++;
-			else j=T[j-1];
-
-			if(j==B.length){lst.add(i-j);j=T[j-1];}
-		}
-		return lst;
 	}
 }

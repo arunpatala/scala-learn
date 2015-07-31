@@ -8,13 +8,10 @@ class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while(true)
 		{
-			if(br.readLine()==null)break;
-			String needle = br.readLine();
 			String hay = br.readLine();
-			List<Integer> lst = search(hay,needle,lps(needle));
-			for(int i:lst)
-				System.out.println(i);
-			System.out.println();
+			if(hay==null)break;
+			String needle = br.readLine();
+			System.out.println(search(hay,needle,lps(needle)));
 		}
 
 	}
@@ -45,20 +42,25 @@ class Main{
 	}
 
 
-	public static List<Integer> search(String hay, String needle, int[] T)
+	public static int search(String hay, String needle, int[] T)
 	{
-		List<Integer> lst = new LinkedList<>();
+		int C=0;
 		char[] A = hay.toCharArray();
 		char[] B = needle.toCharArray();
 		int j = 0, i = 0;
 		while(i<hay.length())
 		{
-			if(A[i]==B[j]){j++;i++;}
+			if(A[i]==B[j]){
+				j++;i++;
+				if(j==B.length){
+					C++;
+					j=T[j-2];
+				}
+			}
 			else if(j==0)i++;
 			else j=T[j-1];
 
-			if(j==B.length){lst.add(i-j);j=T[j-1];}
 		}
-		return lst;
+		return C;
 	}
 }
